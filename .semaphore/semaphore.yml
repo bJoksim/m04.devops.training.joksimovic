@@ -1,0 +1,28 @@
+version: v1.0
+name: Initial Pipeline
+agent:
+  machine:
+    type: f1-standard-2
+    os_image: ubuntu2404
+fail_fast:
+  stop:
+    when: branch != 'main'
+auto_cancel:
+  running:
+    when: branch != 'main'
+  queued:
+    when: branch = 'main'
+blocks:
+  - name: Docker build
+    dependencies: []
+    task:
+      jobs:
+        - name: Docker build
+          commands:
+            - checkout
+            - cache restore
+            - cd 7-pipeline
+            - docker build -t myapp .
+            - 'docker tag myapp bjoksim/myapp:latest'
+            - 'docker push bjoksim/myapp:latest'
+            - cache store
