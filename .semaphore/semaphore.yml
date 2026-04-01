@@ -23,7 +23,7 @@ blocks:
             - cache restore
             - cd 7-pipeline
             - docker build -t myapp .
-            - 'docker tag myapp bjoksim/myapp:latest'
+            - 'docker tag myapp "$DOCKER_USERNAME"/myapp:latest'
             - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-            - 'docker push bjoksim/myapp:latest'
+            - 'docker push "$DOCKER_USERNAME"/myapp:latest'
             - cache store
